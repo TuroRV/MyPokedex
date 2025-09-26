@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import ListItem, { ListItemProps } from "./Listitem";
 
 type ListProps = {
@@ -6,12 +6,11 @@ type ListProps = {
 };
 
 const List: React.FC<ListProps> = ({items}) => 
-    <View>
+    <ScrollView>
         {items.map(item => (
             <ListItem key={item.name}{...item}/>
             ))}
-    </View>
-
+    </ScrollView>
 
 export default List;
 
