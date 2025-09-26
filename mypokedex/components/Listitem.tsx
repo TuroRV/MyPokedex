@@ -16,11 +16,11 @@ const styles = StyleSheet.create ({
       padding: 10,
       marginVertical: 8,
       marginHorizontal: 14,
-      backgroundColor:"#ff5e00ff",
+      backgroundColor:"#97BC62",
     },
     text: {
       fontSize: 32,
-      color: "black",
+      color: "#2C5F2D",
       textAlign: "center",
     },
 }
