@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import List from "@/components/List";
 import { ListItemProps } from "@/components/Listitem";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -102,14 +102,19 @@ const pokemonData = {
 
 const Index = ()  => {
 
-const [next, setNext] = useState(null);
+const [next, setNext] = useState(pokemonData.next);
+const [previous, setPrevious] = useState(pokemonData.previous);
+const [results, setResults] = useState(pokemonData.results);
+
+const isFirstPage = useMemo(() => previous === null,[previous]);
+const isLastPage = useMemo(() => next === null,[next]);
 
   return (
     <SafeAreaView style ={styles.container}>
-      <List items={pokemonData.results}/>
+      <List items={results}/>
       <View style={styles.buttonContainer}>
-        <Button leftIcon="chevron-left" text="Previous" onPress={()=>null} />
-        <Button rightIcon="chevron-right" text="Next" onPress={()=>null} />
+        <Button leftIcon="chevron-left" text="Previous" onPress={()=>null} disabled={isFirstPage}/>
+        <Button rightIcon="chevron-right" text="Next" onPress={()=>null} disabled={isLastPage}/>
       </View>
     </SafeAreaView>
   );
