@@ -1,15 +1,20 @@
-import { StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 export type ListItemProps = {
   name: string;
   url: string;
 };
 
-const ListItem: React.FC<ListItemProps> = ({name}) => (
-  <View style={styles.itemContainer}>
+const ListItem: React.FC<ListItemProps> = ({name,url}) => {
+
+  const id = url.split("/").at(-2) || "";
+
+  return(
+  <Pressable style={styles.itemContainer} onPress={() => router.push(`/${id}`)}>
     <Text style={styles.text}>{name.toUpperCase()}</Text>
-  </View>
-);
+  </Pressable>
+)};
 
 const styles = StyleSheet.create ({
     itemContainer: {
