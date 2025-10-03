@@ -1,4 +1,6 @@
+import PokemonTypeIcons from "@/assets/icons";
 import Button from "@/components/Button";
+import { Audio } from "expo-av";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
@@ -53,6 +55,14 @@ const DetailsScreen = () => {
 
     const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
+    const playAudio = async () => {
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: pokemonData?.cries.latest || "" },
+        { shouldPlay: true, volume: 1 });
+    }
+
+    const goHome = () => {router.push('/')}
+
 if (loading) {
   return (
     <SafeAreaView style ={styles.container}>
@@ -65,7 +75,7 @@ if (!pokemonData) {
     return (
     <SafeAreaView style ={styles.container}>
       <Text style={styles.error}>Pokemon no encontrado</Text>
-      <Button leftIcon='home' text="Home" onPress={() => router.push('/')}/>
+      <Button leftIcon='home' text="Home" onPress={goHome}/>
     </SafeAreaView>
   )
 }
@@ -78,8 +88,22 @@ return (
             style = {styles.image} 
             source={{uri: pokemonData.sprites.other["official-artwork"].front_default}}/>
             <Text style = {[styles.largeText, styles.boldText]}>{capitalize(pokemonData.name)}</Text>
+            <Text style = {[styles.normalText, styles.boldText]}>Height: 
+              <Text style = {styles.normalText}>{` ${pokemonData.height / 10} m`}</Text>
+              </Text>
+            <Text style = {[styles.normalText, styles.boldText]}>Weight:
+              <Text style = {styles.normalText}>{` ${pokemonData.weight / 10} kg`}</Text>
+            </Text>
+            <View style = {styles.typeContainer}>
+              {pokemonData.types.map(({type}) => (
+              <Image key={type.name} source={PokemonTypeIcons[type.name]}/>
+              ))}
+            </View>
         </View>
-        <View style = {styles.buttonContainer}></View>
+        <View style = {styles.buttonContainer}>
+          <Button leftIcon='play-arrow' text="Play" onPress={playAudio}/>
+          <Button leftIcon='home' text="Home" onPress={goHome}/>
+        </View>
     </ScrollView>
 </SafeAreaView>)}
 
@@ -115,7 +139,7 @@ dataContainer: {
 },
 buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     gap: 50,
 },
 image: {
@@ -127,6 +151,15 @@ largeText: {
 },
 boldText: {
     fontWeight: "bold",
+},
+normalText: {
+  fontWeight: "normal",
+  fontSize: 24,
+},
+typeContainer: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  gap: 20,
 },
 });
 
